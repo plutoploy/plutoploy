@@ -2,7 +2,7 @@ import { Hono } from 'hono';
 import { deployApp } from '../services/deployment.service';
 import { removeDeployment } from '../handlers/caddy.handler';
 import { randomUUID } from 'crypto';
-import { deploymentDb } from '../db/database';
+import { deploymentDb, routesDb } from '../db/database';
 
 const deployRoutes = new Hono();
 
@@ -158,12 +158,19 @@ deployRoutes.delete('/deployments/:id', async (c) => {
  * Get all Caddy routes (for debugging)
  */
 deployRoutes.get('/routes', (c) => {
-    const { routesDb } = require('../db/database');
-    const routes = routesDb.getAll();
-    return c.json({
-        routes,
-        count: routes.length
-    });
+    try {
+        const routes = routesDb.getAll();
+        return c.json({
+            routes,
+            count: routes.length
+        });
+    } catch (error: any) {
+        console.error('Error fetching routes:', error);
+        return c.json({ 
+            error: 'Failed to fetch routes',
+            message: error.message 
+        }, 500);
+    }
 });
 
 export { deployRoutes };
