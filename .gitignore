@@ -44,3 +44,4 @@ data/
 *.db-shm
 *.db-wal
 caddy.json
+*.pem
