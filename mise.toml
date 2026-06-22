@@ -1,0 +1,7 @@
+[tools]
+bun = "latest"
+node = "latest"
+pnpm = "latest"
+sops = "latest"
+age = "latest"
+betterleaks = "latest"
